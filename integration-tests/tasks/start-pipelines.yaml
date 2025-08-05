@@ -110,7 +110,6 @@ spec:
           local config_suffix="$4"
           echo "Starting pipeline for OCP version: $ocp_version"
           local pipeline_run
-          
           # Build the tkn command with proper parameter handling
           local tkn_params=(
             "--param" "ocp-version=$ocp_version"
@@ -122,7 +121,6 @@ spec:
             "--param" "machine-type=$OCP_INSTANCE_TYPE"
             "--param" "replicas=$OCP_REPLICAS"
           )
-          
           # Add optional image parameters
           if [[ "${tssc_image}" != "" ]]; then
             tkn_params+=("--param" "tssc-image=${tssc_image}")
@@ -130,7 +128,6 @@ spec:
           if [[ "${tssc_test_image}" != "" ]]; then
             tkn_params+=("--param" "tssc-test-image=${tssc_test_image}")
           fi
-          
           # Add labels and other flags
           tkn_params+=(
             "--use-param-defaults"
@@ -142,7 +139,6 @@ spec:
             "--prefix-name" "e2e-$ocp_version$config_suffix"
             "-o" "name"
           )
-          
           echo "Starting pipeline with testplan (${#testplan_b64} chars): ${testplan_b64:0:50}..."
           pipeline_run=$(tkn pipeline start -f https://raw.githubusercontent.com/jkopriva/rhtap-cli/refs/heads/RHTAP-5290/integration-tests/pipelines/rhtap-cli-e2e.yaml "${tkn_params[@]}")
           #pipeline_run=$(tkn pipeline start -f https://raw.githubusercontent.com/$REPO_ORG/rhtap-cli/refs/heads/$BRANCH/integration-tests/pipelines/rhtap-cli-e2e.yaml "${tkn_params[@]}")
